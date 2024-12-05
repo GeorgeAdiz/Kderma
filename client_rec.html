@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <title>Login</title>
+</head>
+    <body>
+        <!--Navbar-->
+        <nav class="navbar">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="#">
+                <h1 class="text-black">Beauty Clinic</h1>
+              </a>
+              <div class="mt-auto"> 
+                <a class="btn btn-light text-dark" href="login.html" >
+                    <i><ion-icon name="log-out-outline" class="text-dark"></ion-icon></i> Logout
+                </a>
+              </div>
+            </div>
+          </nav>
+        <!-- Sidebar -->
+        
+    <div class="d-flex">
+        <div id="sidebar" class="p-3" >
+
+            <div class="sidebar-logo text-center mb-3">
+                <img src="assets/kdermalogo.png" alt="Logo" class="img-fluid" style="max-width: 140px;">
+            </div>
+            
+            <ul class="nav flex-column">
+                
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="client_rec.html"><i><ion-icon name="folder-outline"></ion-icon></i>Client Records Table</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="schedule.html"><i><ion-icon name="calendar-outline"></ion-icon></i>Schedule</a>
+                </li>
+                
+            </ul> 
+        </div>
+
+        
+
+        <!-- Main Content -->
+        <div class="main-content container-fluid">
+            <div class="row navbar-light bg-white">
+                <div class="col-12">
+                    <nav class="navbar1 border-bottom d-flex justify-content-start">
+                        <h4 class="my-2">Client Records Table <button type="button" class="btn " data-bs-toggle="modal" data-bs-target="#add-record" data-bs-whatever="@mdo" ><ion-icon name="add-outline"></ion-icon></button></h4>
+                    </nav>
+                </div>
+           
+
+                <!-- Table Section -->
+                <div class="container my-3">
+                    <div class="row">
+        
+                        <!-- Search -->
+                        <div class="col-md-6">
+                            <label for="search" class="me-2">Search:</label>
+                            <input type="text" id="search" class="form-control w-auto">
+                        </div>
+                    </div>
+                </div>
+            
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Client ID</th>
+                                <th>Last Name</th>
+                                <th>First Name</th>
+                                <th>Middle Name</th>
+                                <th>Gender</th>
+                                <th>Age</th>
+                                <th>Contact No.</th>
+                                <th>Date Added</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>C1</td>
+                                <td>Cabral</td>
+                                <td>France</td>
+                                <td>Joseph</td>
+                                <td>Male</td>
+                                <td>21</td>
+                                <td>09876543211</td>
+                                <td>01/26/24</td>
+                                <td>
+                                    <i class="marg"> 
+                                        <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#edit" data-bs-whatever="@mdo" ><ion-icon name="create-outline"></ion-icon></button></div>
+                                    </i>
+                                    <i class="marg1">
+                                        <button type="button" class="btn" onclick="window.location.href='view.html'"><ion-icon name="eye-outline"></ion-icon></button></div>
+                                    </i>
+                                    <i class="marg1">
+                                        <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#delete" data-bs-whatever="@mdo" ><ion-icon name="trash-outline"></ion-icon></button></div>
+                                    </i>  
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>C2</td>
+                                <td>Bancoro</td>
+                                <td>Veronica</td>
+                                <td>Marasigan</td>
+                                <td>Female</td>
+                                <td>20</td>
+                                <td>09123456787</td>
+                                <td>01/027/24</td>
+                                <td>
+                                    <i class="marg"> 
+                                        <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#edit" data-bs-whatever="@mdo" ><ion-icon name="create-outline"></ion-icon></button></div>
+                                    </i>
+                                    <i class="marg1">
+                                        <button type="button" class="btn" onclick="window.location.href='view.html'"><ion-icon name="eye-outline"></ion-icon></button></div>
+                                    </i>
+                                    <i class="marg1">
+                                        <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#delete" data-bs-whatever="@mdo" ><ion-icon name="trash-outline"></ion-icon></button></div>
+                                    </i>  
+                                </td>
+                                
+                            </tr>
+                            <tr>
+                                <td>C3</td>
+                                <td>Zamuco</td>
+                                <td>Zedric</td>
+                                <td>Zamuco</td>
+                                <td>Male</td>
+                                <td>21</td>
+                                <td>09876543211</td>
+                                <td>01/28/24</td>
+                                <td>
+                                    <i class="marg"> 
+                                        <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#edit" data-bs-whatever="@mdo" ><ion-icon name="create-outline"></ion-icon></button></div>
+                                    </i>
+                                    <i class="marg1">
+                                        <button type="button" class="btn" onclick="window.location.href='view.html'"><ion-icon name="eye-outline"></ion-icon></button></div>
+                                    </i>
+                                    <i class="marg1">
+                                        <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#delete" data-bs-whatever="@mdo" ><ion-icon name="trash-outline"></ion-icon></button></div>
+                                    </i>  
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>C4</td>
+                                <td>Adiz</td>
+                                <td>George</td>
+                                <td>Gonzales</td>
+                                <td>Male</td>
+                                <td>21</td>
+                                <td>09876543211</td>
+                                <td>01/29/24</td>
+                                <td>
+                                    <i class="marg"> 
+                                        <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#edit" data-bs-whatever="@mdo" ><ion-icon name="create-outline"></ion-icon></button></div>
+                                    </i>
+                                    <i class="marg1">
+                                        <button type="button" class="btn" onclick="window.location.href='view.html'"><ion-icon name="eye-outline"></ion-icon></button></div>
+                                    </i>
+                                    <i class="marg1">
+                                        <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#delete" data-bs-whatever="@mdo" ><ion-icon name="trash-outline"></ion-icon></button></div>
+                                    </i>  
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>C5</td>
+                                <td>Hernandez</td>
+                                <td>Ara</td>
+                                <td>Lopez</td>
+                                <td>Female</td>
+                                <td>20</td>
+                                <td>09876543211</td>
+                                <td>01/30/24</td>
+                                <td>
+                                    <i class="marg"> 
+                                        <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#edit" data-bs-whatever="@mdo" ><ion-icon name="create-outline"></ion-icon></button></div>
+                                    </i>
+                                    <i class="marg1">
+                                        <button type="button" class="btn" onclick="window.location.href='view.html'"><ion-icon name="eye-outline"></ion-icon></button></div>
+                                    </i>
+                                    <i class="marg1">
+                                        <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#delete" data-bs-whatever="@mdo" ><ion-icon name="trash-outline"></ion-icon></button></div>
+                                    </i>  
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+
+                        <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Edit</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                <form>
+                                    <div class="mb-3">
+                                        <label for="client-id" class="col-form-label">Client ID:</label>
+                                        <input type="text" class="form-control" id="client-id">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="last-name" class="col-form-label">Last Name:</label>
+                                        <input type="text" class="form-control" id="last-name">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="first-name" class="col-form-label">First Name:</label>
+                                        <input type="text" class="form-control" id="first-name">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="middle-name" class="col-form-label">Middle Name:</label>
+                                        <input type="text" class="form-control" id="middle-name">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="Gender" class="col-form-label">Gender:</label>
+                                        <select class="form-control" id="Gender">
+                                        <option>Male</option>
+                                        <option>Female</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="age" class="col-form-label">Age:</label>
+                                        <input type="number" class="form-control" id="age">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="Contact No" class="col-form-label">Contact No.:</label>
+                                        <input type="text" class="form-control" id="Contact No">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="date-added" class="col-form-label">Date Added:</label>
+                                        <input type="date" class="form-control" id="date-added">
+                                    </div>
+                                </form>
+                                </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary">Save Changes</button>
+                                    </div>
+                            </div>
+                            </div>
+                        </div>
+
+                            <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                      </div>
+                                    <div class="modal-body">
+                                      Are you sure you want to delete this client record?
+                                    </div>
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                      <button type="button" class="btn btn-primary">Yes</button>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div> 
+                              
+
+                                <div class="modal fade" id="add-record" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Add Client Records</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                        <form>
+                                            <div class="mb-3">
+                                                <label for="Lastname" class="col-form-label">Client ID:</label>
+                                                <input type="text" class="form-control" id="Lastname">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="Lastname" class="col-form-label">Lastname:</label>
+                                                <input type="text" class="form-control" id="Lastname">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="Firstname" class="col-form-label">Firstname:</label>
+                                                <input type="text" class="form-control" id="Firstname">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="Middlename" class="col-form-label">Middlename:</label>
+                                                <input type="text" class="form-control" id="Middlename">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="Address" class="col-form-label">Gender:</label>
+                                                <input type="text" class="form-control" id="Gender">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="Age" class="col-form-label">Age:</label>
+                                                <input type="text" class="form-control" id="Age">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="Birthday" class="col-form-label">Contact No:</label>
+                                                <input type="text" class="form-control" id="Contact">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="date-added" class="col-form-label">Date Added:</label>
+                                                <input type="date" class="form-control" id="date-added">
+                                            </div>
+                                        </form>
+                                        </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-primary">Save</button>
+                                            </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+        <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    </body>
+    </html>
