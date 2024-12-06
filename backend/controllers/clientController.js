@@ -27,11 +27,11 @@ const getClient = async (req, res) => {
 
 // create new client
 const createClient = async (req, res) => {
-    const {ClientID, LastName, FirstName, MiddleName, Gender, Age, ContactNo, DateAdded} = req.body
+    const {clientID, lastName, firstName, middleName, gender, age, contactNo, dateAdded} = req.body
 
     // add doc to db
     try{
-        const client = await Client.create({ClientID, LastName, FirstName, MiddleName, Gender, Age, ContactNo, DateAdded})
+        const client = await Client.create({clientID, lastName, firstName, middleName, gender, age, contactNo, dateAdded})
         res.status(200).json(client)
     } catch (error){
         res.status(400).json({error: error.message})
