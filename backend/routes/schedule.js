@@ -16,7 +16,7 @@ router.get('/', getSchedules)
 router.get('/:id', getSchedule)
 
 // POST  a new workout 
-router.post('/new', createSchedule)
+router.post('/', createSchedule)
 
 // DELETE a workout 
 router.delete('/:id',deleteSchedule)

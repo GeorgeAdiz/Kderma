@@ -16,7 +16,7 @@ router.get('/', getClients)
 router.get('/:id', getClient)
 
 // POST  a new workout 
-router.post('/new', createClient)
+router.post('/', createClient)
 
 // DELETE a workout 
 router.delete('/:id',deleteClient)
