@@ -181,7 +181,7 @@
                         </tbody>
                     </table>
 
-
+                        <!--Edit Client-->
                         <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                             <div class="modal-content">
@@ -230,12 +230,73 @@
                                 </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary">Save Changes</button>
+                                        <button type="button" class="btn btn-primary" id="save-changes">Save Changes</button>
                                     </div>
                             </div>
                             </div>
                         </div>
 
+
+
+                            <!--update client-->
+                            <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Edit</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form id="edit-client-form">
+                                                <div class="mb-3">
+                                                    <label for="edit-client-id" class="col-form-label">Client ID:</label>
+                                                    <input type="text" class="form-control" id="edit-client-id">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="edit-lastname" class="col-form-label">Last Name:</label>
+                                                    <input type="text" class="form-control" id="edit-lastname">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="edit-firstname" class="col-form-label">First Name:</label>
+                                                    <input type="text" class="form-control" id="edit-firstname">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="edit-middle-name" class="col-form-label">Middle Name:</label>
+                                                    <input type="text" class="form-control" id="edit-middle-name">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="edit-gender" class="col-form-label">Gender:</label>
+                                                    <select class="form-control" id="edit-gender">
+                                                        <option>Male</option>
+                                                        <option>Female</option>
+                                                    </select>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="edit-age" class="col-form-label">Age:</label>
+                                                    <input type="number" class="form-control" id="edit-age">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="edit-contact" class="col-form-label">Contact No.:</label>
+                                                    <input type="text" class="form-control" id="edit-contact">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="edit-date-added" class="col-form-label">Date Added:</label>
+                                                    <input type="date" class="form-control" id="edit-date-added">
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary" id="save-changes">Save Changes</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+
+
+
+                            <!--delete client-->
                             <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                   <div class="modal-content">
@@ -253,7 +314,7 @@
                                 </div>
                             </div> 
                               
-
+                                <!--add client-->
                             <div class="modal fade" id="add-record" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                   <div class="modal-content">

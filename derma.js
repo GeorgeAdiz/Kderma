@@ -41,7 +41,7 @@ const getSchedules = async () => {
   }
 };
 
-// Create a new schedule
+// Create a new client
 const createSchedule = async (formData) => {
   try {
     const response = await fetch(API_URL, {
@@ -53,51 +53,79 @@ const createSchedule = async (formData) => {
     if (!response.ok) {
       const errorText = await response.text();
       console.error('Error response from server:', errorText);
-      throw new Error('Failed to create schedule');
+      throw new Error('Failed to create client');
     }
 
     await response.json();
-    getSchedules(); // Refresh schedule list after adding
+    getSchedules(); // Refresh client list after adding
 
     // Clear form fields and hide modal after successful submission
     document.getElementById('add-schedule-form').reset();
-    const addModal = bootstrap.Modal.getInstance(document.getElementById('add-record-schedule')); // Use the correct ID here
+    const addModal = bootstrap.Modal.getInstance(document.getElementById('add-client')); // Use the correct ID here
     if (addModal) {
       addModal.hide();
     } else {
       console.warn('Modal instance not found.');
     }
   } catch (error) {
-    console.error('Error creating schedule:', error);
+    console.error('Error creating client:', error);
   }
 };
 
-// Add a new schedule - event listener for "Save" button
+
+
 document.addEventListener('DOMContentLoaded', () => {
-  const saveAddButton = document.getElementById('save-schedule-btn');
-  if (saveAddButton) {
-    saveAddButton.addEventListener('click', () => {
-      const scheduleData = {
-        clientID: document.getElementById('add-client-id').value.trim(),
-        clientName: document.getElementById('add-client-name').value.trim(),
-        aesthetician: document.getElementById('add-aesthetician').value.trim(),
-        treatment: document.getElementById('add-treatment').value.trim(),
-        date: document.getElementById('add-date').value.trim(),
-        time: document.getElementById('add-time').value.trim(),
-      };
-
-      // Validate form fields
-      if (Object.values(scheduleData).some(value => value === '')) {
-        alert('Please fill in all the fields');
-        return;
-      }
-
-      createSchedule(scheduleData);
-    });
-  } else {
+  const saveAddButton = document.getElementById('save-client');
+  if (!saveAddButton) {
     console.error('Save button not found!');
+    return;
   }
+
+  saveAddButton.addEventListener('click', () => {
+    // Check if modal exists
+    const modal = document.getElementById('add-client');
+    if (!modal) {
+      console.error('Modal with ID "add-client" not found!');
+      return;
+    }
+
+    const clientIDInput = document.getElementById('add-client-id');
+    const clientNameInput = document.getElementById('add-client-name');
+    const aestheticianInput = document.getElementById('add-aesthetician');
+    const treatmentInput = document.getElementById('add-treatment');
+    const dateInput = document.getElementById('add-date');
+    const timeInput = document.getElementById('add-time');
+
+    if (
+      !clientIDInput ||
+      !clientNameInput ||
+      !aestheticianInput ||
+      !treatmentInput ||
+      !dateInput ||
+      !timeInput
+    ) {
+      console.error('One or more input elements are missing!');
+      return;
+    }
+
+    const scheduleData = {
+      clientID: clientIDInput.value.trim(),
+      clientName: clientNameInput.value.trim(),
+      aesthetician: aestheticianInput.value.trim(),
+      treatment: treatmentInput.value.trim(),
+      date: dateInput.value.trim(),
+      time: timeInput.value.trim(),
+    };
+
+    if (Object.values(scheduleData).some(value => value === '')) {
+      alert('Please fill in all the fields');
+      return;
+    }
+
+    createSchedule(scheduleData);
+  });
 });
+
 
 // Edit a schedule
 const editSchedule = async (scheduleId) => {
@@ -114,13 +142,27 @@ const editSchedule = async (scheduleId) => {
     document.getElementById('edit-time').value = schedule.time;
 
     // Bind the "Save" button in the Edit Schedule modal to update the schedule
-    const saveEditButton = document.getElementById('save-edit-schedule-btn');
-    saveEditButton.onclick = null; // Clear previous bindings
-    saveEditButton.addEventListener('click', () => updateSchedule(scheduleId));
+    const saveEditButton = document.getElementById('save-changes');
+    if (saveEditButton) {
+      // Clear any previous event listener
+      saveEditButton.removeEventListener('click', saveChangesHandler);
+      
+      // Create and bind the click event to the Save button
+      const saveChangesHandler = () => {
+        updateSchedule(scheduleId);  // Assuming updateSchedule is a function that updates the schedule
+      };
+      
+      saveEditButton.addEventListener('click', saveChangesHandler);
+    }
+
+    // Show the modal after populating the data
+    const editModal = new bootstrap.Modal(document.getElementById('edit'));
+    editModal.show(); // Show the modal
   } catch (error) {
-    console.error('Error fetching schedule for editing:', error);
+    console.error('Error fetching client for editing:', error);
   }
 };
+
 
 // Update a schedule
 const updateSchedule = async (scheduleId) => {
