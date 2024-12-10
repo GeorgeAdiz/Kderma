@@ -230,50 +230,49 @@
                                 </div>
                             </div> 
                               
-                                <div class="modal fade" id="add-client" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
+                            <div class="modal fade" id="add-client" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Add Client</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Add Client</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                        <form>
-                                            <div class="mb-3">
-                                                <label for="Client-ID" class="col-form-label">Client ID:</label>
-                                                <input type="text" class="form-control" id="Client-ID">
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="Client-Name" class="col-form-label">Client Name:</label>
-                                                <input type="text" class="form-control" id="Client-Name">
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="Aesthetician" class="col-form-label">Aesthetician:</label>
-                                                <input type="text" class="form-control" id="Aesthetician">
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="Treatment" class="col-form-label">Treatment:</label>
-                                                <input type="text" class="form-control" id="Treatment">
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="date" class="col-form-label">Date:</label>
-                                                <input type="date" class="form-control" id="date">
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="time" class="col-form-label">Time:</label>
-                                                <input type="time" class="form-control" id="time">
-                                            </div>
-                                            
-                                        </form>
+                                            <form>
+                                                <div class="mb-3">
+                                                    <label for="Client-ID" class="col-form-label">Client ID:</label>
+                                                    <input type="text" class="form-control" id="client-ID">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="Client-Name" class="col-form-label">Client Name:</label>
+                                                    <input type="text" class="form-control" id="client-Name">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="Aesthetician" class="col-form-label">Aesthetician:</label>
+                                                    <input type="text" class="form-control" id="aesthetician">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="Treatment" class="col-form-label">Treatment:</label>
+                                                    <input type="text" class="form-control" id="treatment">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="date" class="col-form-label">Date:</label>
+                                                    <input type="date" class="form-control" id="date">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="time" class="col-form-label">Time:</label>
+                                                    <input type="time" class="form-control" id="time">
+                                                </div>
+                                            </form>
                                         </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-primary" id="#add-client">Save</button>
-                                            </div>
-                                        
-                                    </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary" id="save-client">Save</button> <!-- Corrected the ID here -->
+                                        </div>
                                     </div>
                                 </div>
+                            </div>
+                            
             </div>
         </div>
     
@@ -281,5 +280,8 @@
         <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
         <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
         <script src="derma.js"></script>
+        <!-- Include jQuery -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     </body>
     </html>

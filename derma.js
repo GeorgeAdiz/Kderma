@@ -1,158 +1,181 @@
-const apiBaseUrl = 'http://localhost:5000/api/schedule'; // Replace with actual API endpoint
+// API endpoint for schedule operations
+const API_URL = 'http://localhost:5000/api/schedule'; // Replace with your backend URL
 
 // DOM elements
-const scheduleTableBody = document.querySelector('tbody');
+const scheduleTableBody = document.querySelector('table tbody');
 const searchInput = document.getElementById('search');
-const saveButton = document.querySelector('#add-client .btn-primary'); // Save button in modal
+const saveAddButton = document.getElementById('save-schedule-btn'); // Save button in Add Modal
 
-// Fetch schedules from the backend
-const fetchSchedules = async () => {
+// Fetch schedules and update the table
+const getSchedules = async () => {
   try {
-    const response = await fetch(apiBaseUrl);
+    const response = await fetch(API_URL);
     const schedules = await response.json();
-    displaySchedules(schedules);
+
+    // Clear table before adding new rows
+    scheduleTableBody.innerHTML = '';
+
+    // Populate table rows with schedule data
+    schedules.forEach(schedule => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${schedule.clientID}</td>
+        <td>${schedule.clientName}</td>
+        <td>${schedule.aesthetician}</td>
+        <td>${schedule.treatment}</td>
+        <td>${schedule.date}</td>
+        <td>${schedule.time}</td>
+        <td>
+          <button class="btn btn-warning" onclick="editSchedule('${schedule._id}')">
+            <ion-icon name="create-outline"></ion-icon>
+          </button>
+          <button class="btn btn-danger" onclick="deleteSchedule('${schedule._id}')">
+            <ion-icon name="trash-outline"></ion-icon>
+          </button>
+        </td>
+      `;
+      scheduleTableBody.appendChild(row);
+    });
   } catch (error) {
     console.error('Error fetching schedules:', error);
   }
 };
 
-// Display schedules in the table
-const displaySchedules = (schedules) => {
-  scheduleTableBody.innerHTML = ''; // Clear existing rows
-
-  schedules.forEach(schedule => {
-    const row = document.createElement('tr');
-    row.innerHTML = `
-      <td>${schedule.clientID}</td>
-      <td>${schedule.clientName}</td>
-      <td>${schedule.aesthetician}</td>
-      <td>${schedule.treatment}</td>
-      <td>${schedule.date}</td>
-      <td>${schedule.time}</td>
-      <td>
-        <button class="btn btn-warning" onclick="editSchedule('${schedule._id}')">
-          <ion-icon name="create-outline"></ion-icon>
-        </button>
-        <button class="btn btn-danger" onclick="deleteSchedule('${schedule._id}')">
-          <ion-icon name="trash-outline"></ion-icon>
-        </button>
-      </td>
-    `;
-    scheduleTableBody.appendChild(row);
-  });
-};
-
 // Create a new schedule
-const createSchedule = async (event) => {
-  event.preventDefault();
-
-  const scheduleData = {
-    clientID: document.getElementById('Client-ID').value.trim(),
-    clientName: document.getElementById('Client-Name').value.trim(),
-    aesthetician: document.getElementById('Aesthetician').value.trim(),
-    treatment: document.getElementById('Treatment').value.trim(),
-    date: document.getElementById('date').value.trim(),
-    time: document.getElementById('time').value.trim(),
-  };
-
+const createSchedule = async (formData) => {
   try {
-    const response = await fetch(apiBaseUrl, {
+    const response = await fetch(API_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(scheduleData),
+      body: JSON.stringify(formData),
     });
 
-    const newSchedule = await response.json();
-    if (response.ok) {
-      fetchSchedules(); // Refresh the schedule list
-      $('#add-client').modal('hide'); // Close the modal after saving
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Error response from server:', errorText);
+      throw new Error('Failed to create schedule');
+    }
+
+    await response.json();
+    getSchedules(); // Refresh schedule list after adding
+
+    // Clear form fields and hide modal after successful submission
+    document.getElementById('add-schedule-form').reset();
+    const addModal = bootstrap.Modal.getInstance(document.getElementById('add-record-schedule')); // Use the correct ID here
+    if (addModal) {
+      addModal.hide();
     } else {
-      alert('Error creating schedule: ' + newSchedule.error);
+      console.warn('Modal instance not found.');
     }
   } catch (error) {
     console.error('Error creating schedule:', error);
   }
 };
 
-// Edit an existing schedule
-const editSchedule = async (id) => {
-  try {
-    const response = await fetch(`${apiBaseUrl}/${id}`);
-    const schedule = await response.json();
-
-    // Populate the modal with schedule data
-    document.getElementById('Client-ID').value = schedule.clientID;
-    document.getElementById('Client-Name').value = schedule.clientName;
-    document.getElementById('Aesthetician').value = schedule.aesthetician;
-    document.getElementById('Treatment').value = schedule.treatment;
-    document.getElementById('date').value = schedule.date;
-    document.getElementById('time').value = schedule.time;
-
-    saveButton.onclick = async () => {
-      const updatedSchedule = {
-        clientID: document.getElementById('Client-ID').value.trim(),
-        clientName: document.getElementById('Client-Name').value.trim(),
-        aesthetician: document.getElementById('Aesthetician').value.trim(),
-        treatment: document.getElementById('Treatment').value.trim(),
-        date: document.getElementById('date').value.trim(),
-        time: document.getElementById('time').value.trim(),
+// Add a new schedule - event listener for "Save" button
+document.addEventListener('DOMContentLoaded', () => {
+  const saveAddButton = document.getElementById('save-schedule-btn');
+  if (saveAddButton) {
+    saveAddButton.addEventListener('click', () => {
+      const scheduleData = {
+        clientID: document.getElementById('add-client-id').value.trim(),
+        clientName: document.getElementById('add-client-name').value.trim(),
+        aesthetician: document.getElementById('add-aesthetician').value.trim(),
+        treatment: document.getElementById('add-treatment').value.trim(),
+        date: document.getElementById('add-date').value.trim(),
+        time: document.getElementById('add-time').value.trim(),
       };
 
-      try {
-        const response = await fetch(`${apiBaseUrl}/${id}`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(updatedSchedule),
-        });
-
-        const updated = await response.json();
-        if (response.ok) {
-          fetchSchedules(); // Refresh the schedule list
-          $('#add-client').modal('hide'); // Close the modal after saving
-        } else {
-          alert('Error updating schedule: ' + updated.error);
-        }
-      } catch (error) {
-        console.error('Error updating schedule:', error);
+      // Validate form fields
+      if (Object.values(scheduleData).some(value => value === '')) {
+        alert('Please fill in all the fields');
+        return;
       }
-    };
+
+      createSchedule(scheduleData);
+    });
+  } else {
+    console.error('Save button not found!');
+  }
+});
+
+// Edit a schedule
+const editSchedule = async (scheduleId) => {
+  try {
+    const response = await fetch(`${API_URL}/${scheduleId}`);
+    const schedule = await response.json();
+
+    // Populate the Edit Schedule modal with existing data
+    document.getElementById('edit-client-id').value = schedule.clientID;
+    document.getElementById('edit-client-name').value = schedule.clientName;
+    document.getElementById('edit-aesthetician').value = schedule.aesthetician;
+    document.getElementById('edit-treatment').value = schedule.treatment;
+    document.getElementById('edit-date').value = schedule.date;
+    document.getElementById('edit-time').value = schedule.time;
+
+    // Bind the "Save" button in the Edit Schedule modal to update the schedule
+    const saveEditButton = document.getElementById('save-edit-schedule-btn');
+    saveEditButton.onclick = null; // Clear previous bindings
+    saveEditButton.addEventListener('click', () => updateSchedule(scheduleId));
   } catch (error) {
     console.error('Error fetching schedule for editing:', error);
   }
 };
 
+// Update a schedule
+const updateSchedule = async (scheduleId) => {
+  const updatedScheduleData = {
+    clientID: document.getElementById('edit-client-id').value.trim(),
+    clientName: document.getElementById('edit-client-name').value.trim(),
+    aesthetician: document.getElementById('edit-aesthetician').value.trim(),
+    treatment: document.getElementById('edit-treatment').value.trim(),
+    date: document.getElementById('edit-date').value.trim(),
+    time: document.getElementById('edit-time').value.trim(),
+  };
+
+  try {
+    await fetch(`${API_URL}/${scheduleId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updatedScheduleData),
+    });
+
+    getSchedules(); // Refresh schedule list
+    const editModal = bootstrap.Modal.getInstance(document.getElementById('edit-schedule'));
+    editModal.hide(); // Hide the modal after saving changes
+  } catch (error) {
+    console.error('Error updating schedule:', error);
+  }
+};
+
 // Delete a schedule
-const deleteSchedule = async (id) => {
-  const confirmDelete = confirm('Are you sure you want to delete this schedule?');
-  if (confirmDelete) {
+const deleteSchedule = async (scheduleId) => {
+  if (confirm('Are you sure you want to delete this schedule record?')) {
     try {
-      const response = await fetch(`${apiBaseUrl}/${id}`, { method: 'DELETE' });
-      const result = await response.json();
-      if (response.ok) {
-        fetchSchedules(); // Refresh the schedule list
-      } else {
-        alert('Error deleting schedule: ' + result.error);
-      }
+      await fetch(`${API_URL}/${scheduleId}`, { method: 'DELETE' });
+      getSchedules(); // Refresh schedule list after deletion
     } catch (error) {
       console.error('Error deleting schedule:', error);
     }
   }
 };
 
-// Search functionality for filtering schedules by client name
-searchInput.addEventListener('input', () => {
+// Search functionality
+const handleSearch = () => {
   const query = searchInput.value.toLowerCase();
   const rows = scheduleTableBody.getElementsByTagName('tr');
-  
+
   Array.from(rows).forEach(row => {
     const cells = row.getElementsByTagName('td');
-    const clientName = cells[1].textContent.toLowerCase(); // Target the second column for client name
-    row.style.display = clientName.includes(query) ? '' : 'none'; // Filter rows
+    const scheduleData = Array.from(cells).map(cell => cell.textContent.toLowerCase());
+
+    const matches = scheduleData.some(data => data.includes(query));
+    row.style.display = matches ? '' : 'none';
   });
-});
+};
 
-// Event listener for creating a schedule (form submission)
-document.querySelector('#add-client form').addEventListener('submit', createSchedule);
+// Event listener for search input
+searchInput.addEventListener('input', handleSearch);
 
-// Fetch all schedules when the page loads
-window.addEventListener('load', fetchSchedules);
+// Initialize schedule list
+getSchedules();

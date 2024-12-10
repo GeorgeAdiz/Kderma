@@ -1,22 +1,22 @@
 // API endpoint for client operations
-const API_URL = 'http://localhost:5000/api/client';  // Replace with your backend URL
+const API_URL = 'http://localhost:5000/api/client'; // Replace with your backend URL
 
 // DOM elements
 const clientTableBody = document.querySelector('table tbody');
 const searchInput = document.getElementById('search');
-const saveButton = document.getElementById('save-client-btn'); // Save button in modal
+const saveAddButton = document.getElementById('save-client-btn'); // Save button in Add Modal
 
 // Fetch clients and update the table
 const getClients = async () => {
   try {
     const response = await fetch(API_URL);
-    const client = await response.json();
+    const clients = await response.json();
 
     // Clear table before adding new rows
     clientTableBody.innerHTML = '';
 
     // Populate table rows with client data
-    client.forEach(client => {
+    clients.forEach(client => {
       const row = document.createElement('tr');
       row.innerHTML = `
         <td>${client.clientID}</td>
@@ -46,8 +46,6 @@ const getClients = async () => {
 // Create a new client
 const createClient = async (formData) => {
   try {
-    console.log('Sending data to create client:', formData); // Log the data being sent
-
     const response = await fetch(API_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -55,86 +53,123 @@ const createClient = async (formData) => {
     });
 
     if (!response.ok) {
-      // Log the response details for debugging
       const errorText = await response.text();
       console.error('Error response from server:', errorText);
       throw new Error('Failed to create client');
     }
 
-    const newClient = await response.json();
-    console.log('Client created:', newClient);
+    await response.json();
     getClients(); // Refresh client list after adding
 
-    // Clear form fields after successful submission
+    // Clear form fields and hide modal after successful submission
     document.getElementById('add-client-form').reset();
-    
-    // Optionally hide modal after submission
-    const modal = bootstrap.Modal.getInstance(document.getElementById('add-client'));
-    modal.hide();
+    const addModal = bootstrap.Modal.getInstance(document.getElementById('add-record')); // Use the correct ID here
+    if (addModal) {
+      addModal.hide();
+    } else {
+      console.warn('Modal instance not found.');
+    }
   } catch (error) {
     console.error('Error creating client:', error);
   }
 };
 
-// Event listener for adding a new client (when the modal "Save" button is clicked)
-saveButton.addEventListener('click', () => {
-  // Gather data from the modal form and trim whitespace from input fields
-  const newClientData = {
-    clientID: document.getElementById('client-id').value.trim(),
-    lastName: document.getElementById('lastname').value.trim(),
-    firstName: document.getElementById('firstname').value.trim(),
-    middleName: document.getElementById('middlename').value.trim(),
-    gender: document.getElementById('gender').value.trim(),
-    age: document.getElementById('age').value.trim(),
-    contactNo: document.getElementById('contact').value.trim(),
-    dateAdded: document.getElementById('date-added').value.trim(),
-  };
 
-  // Validate form fields before creating client
-  const isEmpty = Object.values(newClientData).some(value => value === '');
 
-  if (isEmpty) {
-    alert('Please fill in all the fields');
-    return;
+// Add a new client - event listener for "Save" button
+document.addEventListener('DOMContentLoaded', () => {
+  const saveAddButton = document.getElementById('save-client-btn');
+  if (saveAddButton) {
+    saveAddButton.addEventListener('click', () => {
+      const clientIDInput = document.getElementById('add-client-id');
+      if (!clientIDInput) {
+        console.error('Element with ID "add-client-id" not found!');
+        return;
+      }
+
+      const newClientData = {
+        clientID: clientIDInput.value.trim(),
+        lastName: document.getElementById('add-lastname').value.trim(),
+        firstName: document.getElementById('add-firstname').value.trim(),
+        middleName: document.getElementById('add-middlename').value.trim(),
+        gender: document.getElementById('add-gender').value.trim(),
+        age: document.getElementById('add-age').value.trim(),
+        contactNo: document.getElementById('add-contact').value.trim(),
+        dateAdded: document.getElementById('add-date-added').value.trim(),
+      };
+
+      // Validate form fields
+      if (Object.values(newClientData).some(value => value === '')) {
+        alert('Please fill in all the fields');
+        return;
+      }
+
+      createClient(newClientData);
+    });
+  } else {
+    console.error('Save button not found!');
   }
-
-  // Create the new client using the form data
-  createClient(newClientData);
 });
 
-// Edit client
+
+// Edit a client
 const editClient = async (clientId) => {
   try {
     const response = await fetch(`${API_URL}/${clientId}`);
     const client = await response.json();
 
-    // Populate modal for editing
-    document.getElementById('client-id').value = client.clientID;
-    document.getElementById('lastname').value = client.lastName;
-    document.getElementById('firstname').value = client.firstName;
-    document.getElementById('middlename').value = client.middleName;
-    document.getElementById('gender').value = client.gender;
-    document.getElementById('age').value = client.age;
-    document.getElementById('contact').value = client.contactNo;
-    document.getElementById('date-added').value = client.dateAdded;
+    // Populate the Edit Client modal with existing data
+    document.getElementById('edit-client-id').value = client.clientID;
+    document.getElementById('edit-lastname').value = client.lastName;
+    document.getElementById('edit-firstname').value = client.firstName;
+    document.getElementById('edit-middlename').value = client.middleName;
+    document.getElementById('edit-gender').value = client.gender;
+    document.getElementById('edit-age').value = client.age;
+    document.getElementById('edit-contact').value = client.contactNo;
+    document.getElementById('edit-date-added').value = new Date(client.dateAdded).toISOString().split('T')[0];
 
-    // Bind update function
-    const saveButton = document.querySelector('#edit .btn-primary');
-    saveButton.onclick = () => updateClient(clientId);
+    // Bind the "Save" button in the Edit Client modal to update the client
+    const saveEditButton = document.getElementById('save-edit-client-btn');
+    saveEditButton.onclick = null; // Clear previous bindings
+    saveEditButton.addEventListener('click', () => updateClient(clientId));
   } catch (error) {
     console.error('Error fetching client for editing:', error);
   }
 };
 
-// Delete client
+// Update a client
+const updateClient = async (clientId) => {
+  const updatedClientData = {
+    clientID: document.getElementById('edit-client-id').value.trim(),
+    lastName: document.getElementById('edit-lastname').value.trim(),
+    firstName: document.getElementById('edit-firstname').value.trim(),
+    middleName: document.getElementById('edit-middlename').value.trim(),
+    gender: document.getElementById('edit-gender').value.trim(),
+    age: document.getElementById('edit-age').value.trim(),
+    contactNo: document.getElementById('edit-contact').value.trim(),
+    dateAdded: document.getElementById('edit-date-added').value.trim(),
+  };
+
+  try {
+    await fetch(`${API_URL}/${clientId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updatedClientData),
+    });
+
+    getClients(); // Refresh client list
+    const editModal = bootstrap.Modal.getInstance(document.getElementById('edit-client'));
+    editModal.hide(); // Hide the modal after saving changes
+  } catch (error) {
+    console.error('Error updating client:', error);
+  }
+};
+
+// Delete a client
 const deleteClient = async (clientId) => {
-  const confirmDelete = confirm('Are you sure you want to delete this client record?');
-  if (confirmDelete) {
+  if (confirm('Are you sure you want to delete this client record?')) {
     try {
-      await fetch(`${API_URL}/${clientId}`, {
-        method: 'DELETE',
-      });
-      console.log('Client deleted');
+      await fetch(`${API_URL}/${clientId}`, { method: 'DELETE' });
       getClients(); // Refresh client list after deletion
     } catch (error) {
       console.error('Error deleting client:', error);

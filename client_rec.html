@@ -193,15 +193,15 @@
                                 <form id="edit-client-form">
                                     <div class="mb-3">
                                         <label for="client-id" class="col-form-label">Client ID:</label>
-                                        <input type="text" class="form-control" id="client-id">
+                                        <input type="text" class="form-control" id="edit-client-id">
                                     </div>
                                     <div class="mb-3">
                                         <label for="last-name" class="col-form-label">Last Name:</label>
-                                        <input type="text" class="form-control" id="last-name">
+                                        <input type="text" class="form-control" id="edit-lastname">
                                     </div>
                                     <div class="mb-3">
                                         <label for="first-name" class="col-form-label">First Name:</label>
-                                        <input type="text" class="form-control" id="first-name">
+                                        <input type="text" class="form-control" id="edit-firstname">
                                     </div>
                                     <div class="mb-3">
                                         <label for="middle-name" class="col-form-label">Middle Name:</label>
@@ -254,57 +254,57 @@
                             </div> 
                               
 
-                                <div class="modal fade" id="add-record" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Add Client Records</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <div class="modal fade" id="add-record" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h1 class="modal-title fs-5" id="exampleModalLabel">Add Client Records</h1>
+                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                      <form id="add-client-form">
+                                        <div class="mb-3">
+                                          <label for="add-client-id" class="col-form-label">Client ID:</label>
+                                          <input type="text" class="form-control" id="add-client-id">
                                         </div>
-                                        <div class="modal-body">
-                                            <form id="add-client-form">
-                                                <div class="mb-3">
-                                                  <label for="client-id" class="col-form-label">Client ID:</label>
-                                                  <input type="text" class="form-control" id="client-id">
-                                                </div>
-                                                <div class="mb-3">
-                                                  <label for="Lastname" class="col-form-label">Last Name:</label>
-                                                  <input type="text" class="form-control" id="lastname">
-                                                </div>
-                                                <div class="mb-3">
-                                                  <label for="Firstname" class="col-form-label">First Name:</label>
-                                                  <input type="text" class="form-control" id="firstname">
-                                                </div>
-                                                <div class="mb-3">
-                                                  <label for="Middlename" class="col-form-label">Middle Name:</label>
-                                                  <input type="text" class="form-control" id="middlename">
-                                                </div>
-                                                <div class="mb-3">
-                                                  <label for="Gender" class="col-form-label">Gender:</label>
-                                                  <input type="text" class="form-control" id="gender">
-                                                </div>
-                                                <div class="mb-3">
-                                                  <label for="Age" class="col-form-label">Age:</label>
-                                                  <input type="text" class="form-control" id="age">
-                                                </div>
-                                                <div class="mb-3">
-                                                  <label for="Contact" class="col-form-label">Contact No:</label>
-                                                  <input type="text" class="form-control" id="contact">
-                                                </div>
-                                                <div class="mb-3">
-                                                  <label for="date-added" class="col-form-label">Date Added:</label>
-                                                  <input type="date" class="form-control" id="date-added">
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                    <button type="button" class="btn btn-primary" id="save-client-btn">Save</button>
-                                                </div>   
-                                              </form>                                              
-                                            
-                                        </div>                                         
+                                        <div class="mb-3">
+                                          <label for="add-lastname" class="col-form-label">Last Name:</label>
+                                          <input type="text" class="form-control" id="add-lastname">
+                                        </div>
+                                        <div class="mb-3">
+                                          <label for="add-firstname" class="col-form-label">First Name:</label>
+                                          <input type="text" class="form-control" id="add-firstname">
+                                        </div>
+                                        <div class="mb-3">
+                                          <label for="add-middlename" class="col-form-label">Middle Name:</label>
+                                          <input type="text" class="form-control" id="add-middlename">
+                                        </div>
+                                        <div class="mb-3">
+                                          <label for="add-gender" class="col-form-label">Gender:</label>
+                                          <input type="text" class="form-control" id="add-gender">
+                                        </div>
+                                        <div class="mb-3">
+                                          <label for="add-age" class="col-form-label">Age:</label>
+                                          <input type="text" class="form-control" id="add-age">
+                                        </div>
+                                        <div class="mb-3">
+                                          <label for="add-contact" class="col-form-label">Contact No:</label>
+                                          <input type="text" class="form-control" id="add-contact">
+                                        </div>
+                                        <div class="mb-3">
+                                          <label for="add-date-added" class="col-form-label">Date Added:</label>
+                                          <input type="date" class="form-control" id="add-date-added">
+                                        </div>
+                                        <div class="modal-footer">
+                                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                          <button type="button" class="btn btn-primary" id="save-client-btn">Save</button>
+                                        </div>
+                                      </form>
                                     </div>
-                                    </div>
+                                  </div>
                                 </div>
+                              </div>
+                              
                             </div>
                         </div>
 
