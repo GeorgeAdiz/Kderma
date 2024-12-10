@@ -10,13 +10,13 @@ const saveButton = document.getElementById('save-client-btn'); // Save button in
 const getClients = async () => {
   try {
     const response = await fetch(API_URL);
-    const clients = await response.json();
+    const client = await response.json();
 
     // Clear table before adding new rows
     clientTableBody.innerHTML = '';
 
     // Populate table rows with client data
-    clients.forEach(client => {
+    client.forEach(client => {
       const row = document.createElement('tr');
       row.innerHTML = `
         <td>${client.clientID}</td>
