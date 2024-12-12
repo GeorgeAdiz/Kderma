@@ -118,15 +118,34 @@ const editClient = async (clientId) => {
     const response = await fetch(`${API_URL}/${clientId}`);
     const client = await response.json();
 
+    // Debug which element is missing
+    const elements = {
+      'edit-client-id': document.getElementById('edit-client-id'),
+      'edit-lastname': document.getElementById('edit-lastname'),
+      'edit-firstname': document.getElementById('edit-firstname'),
+      'edit-middlename': document.getElementById('edit-middlename'),
+      'edit-gender': document.getElementById('edit-gender'),
+      'edit-age': document.getElementById('edit-age'),
+      'edit-contact': document.getElementById('edit-contact'),
+      'edit-date-added': document.getElementById('edit-date-added')
+    };
+
+    // Log which elements are missing
+    Object.entries(elements).forEach(([id, element]) => {
+      if (!element) {
+        console.error(`Missing element with id: ${id}`);
+      }
+    });
+
     // Populate the Edit Client modal with existing data
     document.getElementById('edit-client-id').value = client.clientID;
     document.getElementById('edit-lastname').value = client.lastName;
     document.getElementById('edit-firstname').value = client.firstName;
-    document.getElementById('middle-name').value = client.middleName;
-    document.getElementById('Gender').value = client.gender;
-    document.getElementById('age').value = client.age;
-    document.getElementById('Contact No').value = client.contactNo;
-    document.getElementById('date-added').value = new Date(client.dateAdded).toISOString().split('T')[0];
+    document.getElementById('edit-middlename').value = client.middleName;
+    document.getElementById('edit-gender').value = client.gender;
+    document.getElementById('edit-age').value = client.age;
+    document.getElementById('edit-contact').value = client.contactNo;
+    document.getElementById('edit-date-added').value = new Date(client.dateAdded).toISOString().split('T')[0];
 
     // Bind the "Save" button in the Edit Client modal to update the client
     const saveEditButton = document.getElementById('save-changes');
@@ -145,11 +164,14 @@ const editClient = async (clientId) => {
 
 // Update a client
 const updateClient = async (clientId) => {
+  // Log the URL being called for debugging
+  console.log('Updating client at:', `${API_URL}/update/${clientId}`);
+  
   const updatedClientData = {
     clientID: document.getElementById('edit-client-id').value.trim(),
     lastName: document.getElementById('edit-lastname').value.trim(),
     firstName: document.getElementById('edit-firstname').value.trim(),
-    middleName: document.getElementById('edit-middle-name').value.trim(),
+    middleName: document.getElementById('edit-middlename').value.trim(),
     gender: document.getElementById('edit-gender').value.trim(),
     age: document.getElementById('edit-age').value.trim(),
     contactNo: document.getElementById('edit-contact').value.trim(),
@@ -157,26 +179,29 @@ const updateClient = async (clientId) => {
   };
 
   try {
-    const response = await fetch(`${API_URL}/${clientId}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+    const response = await fetch(`${API_URL}/update/${clientId}`, {
+      method: 'PATCH',
+      headers: { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
       body: JSON.stringify(updatedClientData),
     });
 
-    // Check if the response is OK (status code 200-299)
+    console.log('Response status:', response.status);
+    console.log('Response headers:', [...response.headers.entries()]);
+
     if (response.ok) {
       console.log('Client updated successfully');
       getClients(); // Refresh client list after update
       const editModal = bootstrap.Modal.getInstance(document.getElementById('edit'));
-      editModal.hide(); // Hide the modal after saving changes
+      editModal.hide();
     } else {
-      // Log the error message and status if the request fails
-      const errorData = await response.json();
-      console.error('Failed to update client:', errorData);
-      alert('Failed to update client. Please try again later.');
+      const errorText = await response.text();
+      console.error('Server response:', errorText);
+      alert(`Failed to update client. Server returned status ${response.status}`);
     }
   } catch (error) {
-    // Catch any network or other unexpected errors
     console.error('Error updating client:', error);
     alert('An unexpected error occurred. Please try again later.');
   }
