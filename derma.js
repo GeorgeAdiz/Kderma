@@ -17,14 +17,21 @@ const getSchedules = async () => {
 
     // Populate table rows with schedule data
     schedules.forEach(schedule => {
+      const formattedDate = formatDateForDisplay(schedule.date);
+      const formattedTime = new Date(`2000-01-01T${schedule.time}`).toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+      });
+      
       const row = document.createElement('tr');
       row.innerHTML = `
         <td>${schedule.clientID}</td>
         <td>${schedule.clientName}</td>
         <td>${schedule.aesthetician}</td>
         <td>${schedule.treatment}</td>
-        <td>${schedule.date}</td>
-        <td>${schedule.time}</td>
+        <td>${formattedDate}</td>
+        <td>${formattedTime}</td>
         <td>
           <button class="btn btn-warning" onclick="editSchedule('${schedule._id}')">
             <ion-icon name="create-outline"></ion-icon>
@@ -141,52 +148,76 @@ const editSchedule = async (scheduleId) => {
     document.getElementById('edit-date').value = schedule.date;
     document.getElementById('edit-time').value = schedule.time;
 
-    // Bind the "Save" button in the Edit Schedule modal to update the schedule
-    const saveEditButton = document.getElementById('save-changes');
-    if (saveEditButton) {
-      // Clear any previous event listener
-      saveEditButton.removeEventListener('click', saveChangesHandler);
-      
-      // Create and bind the click event to the Save button
-      const saveChangesHandler = () => {
-        updateSchedule(scheduleId);  // Assuming updateSchedule is a function that updates the schedule
-      };
-      
-      saveEditButton.addEventListener('click', saveChangesHandler);
-    }
-
-    // Show the modal after populating the data
+    // Show the modal
     const editModal = new bootstrap.Modal(document.getElementById('edit'));
-    editModal.show(); // Show the modal
+    editModal.show();
+
+    // Remove any existing event listener from the save button
+    const saveButton = document.getElementById('save-schedule-btn');
+    const oldSaveButton = saveButton.cloneNode(true);
+    saveButton.parentNode.replaceChild(oldSaveButton, saveButton);
+
+    // Add new event listener
+    oldSaveButton.addEventListener('click', async () => {
+      await updateSchedule(scheduleId);
+    });
+
   } catch (error) {
-    console.error('Error fetching client for editing:', error);
+    console.error('Error fetching schedule for editing:', error);
   }
 };
 
+// Helper function to format date for display only
+const formatDateForDisplay = (dateString) => {
+  const date = new Date(dateString);
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const year = date.getFullYear();
+  return `${day}/${month}/${year}`;
+};
 
 // Update a schedule
 const updateSchedule = async (scheduleId) => {
-  const updatedScheduleData = {
-    clientID: document.getElementById('edit-client-id').value.trim(),
-    clientName: document.getElementById('edit-client-name').value.trim(),
-    aesthetician: document.getElementById('edit-aesthetician').value.trim(),
-    treatment: document.getElementById('edit-treatment').value.trim(),
-    date: document.getElementById('edit-date').value.trim(),
-    time: document.getElementById('edit-time').value.trim(),
-  };
-
   try {
-    await fetch(`${API_URL}/${scheduleId}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(updatedScheduleData),
+    console.log('Updating schedule:', scheduleId);
+    
+    // Keep the original ISO date format for the server
+    const updatedScheduleData = {
+      clientID: document.getElementById('edit-client-id').value.trim(),
+      clientName: document.getElementById('edit-client-name').value.trim(),
+      aesthetician: document.getElementById('edit-aesthetician').value.trim(),
+      treatment: document.getElementById('edit-treatment').value.trim(),
+      date: document.getElementById('edit-date').value, // Keep original ISO format
+      time: document.getElementById('edit-time').value.trim(),
+    };
+
+    console.log('Update data:', updatedScheduleData);
+
+    const updateUrl = `${API_URL}/${scheduleId}`;
+    console.log('Making PATCH request to:', updateUrl);
+
+    const response = await fetch(updateUrl, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(updatedScheduleData)
     });
 
-    getSchedules(); // Refresh schedule list
-    const editModal = bootstrap.Modal.getInstance(document.getElementById('edit-schedule'));
-    editModal.hide(); // Hide the modal after saving changes
+    if (response.ok) {
+      console.log('Schedule updated successfully');
+      getSchedules(); // Refresh the table
+      const editModal = bootstrap.Modal.getInstance(document.getElementById('edit'));
+      editModal.hide();
+    } else {
+      const errorData = await response.json();
+      console.error('Server response:', errorData);
+      alert(errorData.error || 'Failed to update schedule');
+    }
   } catch (error) {
     console.error('Error updating schedule:', error);
+    alert('An unexpected error occurred while updating the schedule.');
   }
 };
 

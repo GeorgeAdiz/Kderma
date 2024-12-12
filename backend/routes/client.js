@@ -22,6 +22,6 @@ router.post('/', createClient)
 router.delete('/:id',deleteClient)
 
 // UPDATE a workout
-router.patch('/:id', updateClient)
+router.patch('/update/:id', updateClient)
 
 module.exports = router
